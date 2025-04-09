@@ -29,7 +29,10 @@ export class User extends Model<
   }
 
   static associate(models: any) {
-    // Define associations here
+    User.hasOne(models.cart, {
+      foreignKey: "user_id",
+      as: "cart",
+    });
   }
 }
 

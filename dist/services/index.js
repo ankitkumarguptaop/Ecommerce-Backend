@@ -33,8 +33,10 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userService = exports.authService = void 0;
+exports.productService = exports.userService = exports.authService = void 0;
 const authService = __importStar(require("./auth.service"));
 exports.authService = authService;
 const userService = __importStar(require("./user.service"));
 exports.userService = userService;
+const productService = __importStar(require("./product.service"));
+exports.productService = productService;

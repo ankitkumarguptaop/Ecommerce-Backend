@@ -28,7 +28,10 @@ export class product extends Model<
   declare deletedAt: Date | null;
 
   static associate(models: any) {
-
+    product.hasMany(models.image, {
+      foreignKey: "product_id",
+      as: "product_images",
+    });
   }
 }
 

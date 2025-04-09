@@ -10,30 +10,35 @@ import {
   ForeignKey,
 } from "sequelize";
 
+import { cart } from "./cart";
 import { product } from "./product";
 
-export class image extends Model<
-  InferAttributes<image>,
-  InferCreationAttributes<image>
+export class cartItem  extends Model<
+  InferAttributes<cartItem>,
+  InferCreationAttributes<cartItem>
 > {
   declare id: CreationOptional<number>;
-  declare name: string;
-  declare url: string;
   declare product_id: ForeignKey<product["id"]>;
+  declare cart_id: ForeignKey<cart["id"]>;
+  declare quantity: number;
   declare createdAt: Date;
   declare updatedAt: Date;
   declare deletedAt: Date | null;
 
   static associate(models: any) {
-    image.belongsTo(models.product, {
+    cartItem.belongsTo(models.product, {
       foreignKey: "product_id",
-      as: "product_image",
+      as: "product",
+    });
+    cartItem.belongsTo(models.cart, {
+      foreignKey: "cart_id",
+      as: "cart",
     });
   }
 }
 
-export const initImageModel = (sequelize: Sequelize) => {
-  image.init(
+export const initCartItemModel = (sequelize: Sequelize) => {
+  cartItem.init(
     {
       id: {
         allowNull: false,
@@ -41,22 +46,26 @@ export const initImageModel = (sequelize: Sequelize) => {
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
-      url: {
-        allowNull: false,
-        type: DataTypes.STRING,
-      },
 
-      name: {
-        allowNull: false,
-        type: DataTypes.STRING,
-      },
-      product_id: {
+      product_id:{
         allowNull: false,
         type: DataTypes.INTEGER,
         references: {
-          model: "products",
+          model: "products", 
           key: "id",
         },
+      },
+      cart_id:{
+        allowNull: false,
+        type: DataTypes.INTEGER,
+        references: {
+          model: "carts", 
+          key: "id",
+        },
+      },
+      quantity:{
+        allowNull: false,
+        type: DataTypes.INTEGER,
       },
       createdAt: {
         allowNull: false,
@@ -69,11 +78,12 @@ export const initImageModel = (sequelize: Sequelize) => {
       deletedAt: {
         type: DataTypes.DATE,
       },
+
     },
     {
       sequelize,
-      modelName: "images",
-      tableName: "images",
+      modelName: "cartItems",
+      tableName: "cartItems",
       timestamps: true,
       paranoid: true,
     }

@@ -1,5 +1,5 @@
 import  { BadRequest, ForBidden, UnAuthorized }  from "../libs/errors"
-import {userRepository} from "../repositories"
+import {cartRepository, userRepository} from "../repositories"
 
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken'
@@ -39,6 +39,10 @@ export const signUp = async (payload:SignUpPayload) => {
     profile_image : path,
     role : role
   });
+
+  await cartRepository.create({
+   user_id:user.id
+  });
   
   return user;
 };
@@ -65,6 +69,9 @@ export const signIn = async (payload:SignInPayload) => {
   if (!validate) {
     throw new UnAuthorized("Unauthorised access Password not matched!");
   }
+ const cart= await cartRepository.findOne({
+    user_id:user.id
+   });
    
-  return { token: generateToken(user.id), user: user  };
+  return { token: generateToken(user.id), user: user ,cart:cart  };
 };

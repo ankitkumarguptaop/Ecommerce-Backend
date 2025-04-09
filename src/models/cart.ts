@@ -9,31 +9,32 @@ import {
   CreationOptional,
   ForeignKey,
 } from "sequelize";
+import { User } from "./user";
 
-import { product } from "./product";
-
-export class image extends Model<
-  InferAttributes<image>,
-  InferCreationAttributes<image>
+export class cart  extends Model<
+  InferAttributes<cart>,
+  InferCreationAttributes<cart>
 > {
   declare id: CreationOptional<number>;
-  declare name: string;
-  declare url: string;
-  declare product_id: ForeignKey<product["id"]>;
+  declare user_id: ForeignKey<User["id"]>;
   declare createdAt: Date;
   declare updatedAt: Date;
   declare deletedAt: Date | null;
 
   static associate(models: any) {
-    image.belongsTo(models.product, {
-      foreignKey: "product_id",
-      as: "product_image",
+    cart.belongsTo(models.User, {
+      foreignKey: "user_id",
+      as: "user",
+    });
+    cart.hasMany(models.cartItem, {
+      foreignKey: "cart_id",
+      as: "cartItems",
     });
   }
 }
 
-export const initImageModel = (sequelize: Sequelize) => {
-  image.init(
+export const initCartModel = (sequelize: Sequelize) => {
+  cart.init(
     {
       id: {
         allowNull: false,
@@ -41,20 +42,12 @@ export const initImageModel = (sequelize: Sequelize) => {
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
-      url: {
-        allowNull: false,
-        type: DataTypes.STRING,
-      },
 
-      name: {
-        allowNull: false,
-        type: DataTypes.STRING,
-      },
-      product_id: {
+      user_id:{
         allowNull: false,
         type: DataTypes.INTEGER,
         references: {
-          model: "products",
+          model: "Users", 
           key: "id",
         },
       },
@@ -69,11 +62,12 @@ export const initImageModel = (sequelize: Sequelize) => {
       deletedAt: {
         type: DataTypes.DATE,
       },
+
     },
     {
       sequelize,
-      modelName: "images",
-      tableName: "images",
+      modelName: "carts",
+      tableName: "carts",
       timestamps: true,
       paranoid: true,
     }

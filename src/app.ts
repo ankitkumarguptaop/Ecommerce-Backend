@@ -1,4 +1,4 @@
-import express, { Application, Request, Response, NextFunction } from "express";
+import express, { Application } from "express";
 import { createServer } from "http";
 import dotenv from "dotenv";
 import { Server } from "socket.io";
@@ -37,7 +37,8 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
-app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
+app.use("/src/uploads", express.static(path.join(__dirname, "uploads")));
+
 
 app.use("/", routes);
 
@@ -50,7 +51,6 @@ io.on("connection", (socket) => {
     console.log("Ping received");
     cb();
   });
-
   socket.on("join-chats", (roomIds: string[] | string) => {
     socket.join(roomIds);
     console.log(`Socket ${socket.id} joined rooms:`, roomIds);

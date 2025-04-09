@@ -33,8 +33,10 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userController = exports.authController = void 0;
+exports.productController = exports.userController = exports.authController = void 0;
 const authController = __importStar(require("./auth.controller"));
 exports.authController = authController;
 const userController = __importStar(require("./user.controller"));
 exports.userController = userController;
+const productController = __importStar(require("./product.controller"));
+exports.productController = productController;

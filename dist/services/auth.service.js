@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.signIn = exports.signUp = void 0;
 const errors_1 = require("../libs/errors");
 const repositories_1 = require("../repositories");
-const bcrypt_1 = __importDefault(require("bcrypt"));
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const signUp = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
@@ -49,7 +49,7 @@ const signIn = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     if (!user) {
         throw new errors_1.UnAuthorized("Need to register first");
     }
-    const validate = yield bcrypt_1.default.compare(password, user.password);
+    const validate = yield bcryptjs_1.default.compare(password, user.password);
     if (!validate) {
         throw new errors_1.UnAuthorized("Unauthorised access Password not matched!");
     }

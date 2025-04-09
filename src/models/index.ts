@@ -2,6 +2,8 @@ import { Sequelize } from 'sequelize';
 import { initUserModel, User } from './user';
 import { initProductModel, product } from './product';
 import { initImageModel ,image } from './image';
+import { initCartModel ,cart } from './cart';
+import { initCartItemModel ,cartItem } from './cartitem';
 import configObj from '../configs/dbconfig';
 
 const config = configObj['development'];
@@ -21,10 +23,13 @@ const sequelize = new Sequelize(
 initUserModel(sequelize);
 initProductModel(sequelize);
 initImageModel(sequelize);
-
+initCartModel(sequelize);
+initCartItemModel(sequelize)
 // Call associate methods if needed
-User.associate?.({});
-product.associate?.({});
+User.associate?.({cart});
+product.associate?.({image,User});
 image.associate?.({product});
+cart.associate?.({User ,cartItem});
+cartItem.associate?.({product ,cart});
 
-export { sequelize, User  ,product ,image};
+export { sequelize, User  ,product ,image ,cart,cartItem};

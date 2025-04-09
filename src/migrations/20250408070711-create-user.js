@@ -35,7 +35,6 @@ module.exports = {
           type: DataTypes.ENUM,
           values: ["normal", "admin"],
         },
-
         createdAt: {
           allowNull: false,
           type: Sequelize.DATE,
