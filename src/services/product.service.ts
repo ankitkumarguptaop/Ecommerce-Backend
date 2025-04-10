@@ -102,10 +102,10 @@ export const deleteProduct = async (payload: any) => {
   });
 };
 
-export const updateProduct = async (payload: any) => {
+export const  updateProduct = async (payload: any) => {
   const { productId } = payload.params;
   const { id } = payload.user;
-
+   console.log('✌️payload.body --->', payload.body);
   const product: any = await productRepository.findOne({ id: productId });
   if (!product) {
     throw new ForBidden("product not found");
